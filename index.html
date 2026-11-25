@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terästen lämpökäsittelyt – tehtävät</title>
+<style>
+  :root {
+    --ink: #1F2328; --ink2: #3A4452; --muted: #5f6b78; --bg: #ffffff; --panel: #F1F3F5;
+    --line: #d5dbe1; --accent: #E8590C; --good: #2F855A; --bad: #B23A12; --info: #5C7C99;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Calibri, "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.5; font-size: 17px; }
+  header { background: var(--ink); color: #fff; padding: 40px 20px 32px; }
+  header .wrap, main { max-width: 860px; margin: 0 auto; }
+  h1, h2, h3 { font-family: Cambria, Georgia, serif; line-height: 1.25; }
+  h1 { margin: 0 0 8px; font-size: 2.1rem; }
+  header p { margin: 0; color: #c9d1d9; }
+  main { padding: 8px 20px 80px; }
+  h2 { margin: 48px 0 8px; font-size: 1.6rem; }
+  h2 small { color: var(--muted); font-weight: normal; font-size: .9rem; font-family: Calibri, Arial, sans-serif; }
+  .task { background: var(--panel); border-radius: 12px; padding: 20px 22px; margin: 20px 0; }
+  .task h3 { margin: 0 0 4px; font-size: 1.25rem; }
+  .meta { color: var(--muted); font-size: .9rem; margin-bottom: 12px; }
+  .meta b { color: var(--accent); }
+  .q { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+  .q label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .q.good { border-color: var(--good); box-shadow: inset 4px 0 0 var(--good); }
+  .q.bad { border-color: var(--bad); box-shadow: inset 4px 0 0 var(--bad); }
+  select, input[type=number], textarea { font: inherit; padding: 6px 8px; border: 1px solid #aab4be; border-radius: 6px; background: #fff; max-width: 100%; }
+  select { min-width: 260px; }
+  input[type=number] { width: 120px; }
+  textarea { width: 100%; min-height: 70px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .fb { margin-top: 8px; font-size: .95rem; display: none; }
+  .fb.show { display: block; }
+  .fb.ok { color: var(--good); } .fb.no { color: var(--bad); } .fb.model { color: var(--ink2); background: #eef3f7; border-radius: 6px; padding: 8px 10px; }
+  .actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer; background: var(--accent); color: #fff; }
+  button.ghost { background: transparent; color: var(--ink2); border: 1px solid #aab4be; }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #f2a541; outline-offset: 2px; }
+  .score { font-weight: 600; align-self: center; }
+  .legend { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font-size: .95rem; }
+  .legend div { margin: 2px 0; }
+  table.data { border-collapse: collapse; margin: 8px 0; background: #fff; }
+  table.data th, table.data td { border: 1px solid var(--line); padding: 5px 12px; text-align: right; }
+  table.data th { background: var(--ink2); color: #fff; }
+  .chart { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin: 10px 0; }
+  .total { position: sticky; bottom: 0; background: var(--ink); color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .total .wrap { max-width: 860px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .total b { color: #f2a541; }
+  .intro { background: var(--panel); border-radius: 12px; padding: 16px 20px; margin-top: 24px; }
+  @media print { .actions, .total { display: none; } .fb { display: block !important; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Terästen lämpökäsittelyt – tehtävät</h1>
+  <p>Materiaalitekniikka · noin 60 minuuttia · 9 tehtävää</p>
+</div></header>
+
+<main id="app">
+  <div class="intro">
+    <p style="margin-top:0"><b>Ohje.</b> Vastaa tehtäviin ja paina <i>Tarkista</i>. Valintatehtävät tarkistetaan heti. Avoimissa kohdissa kirjoita ensin oma vastauksesi ja vertaa sitä sitten mallivastaukseen. Apuna saat käyttää Fe–C-piirroksen monistetta ja luentodioja.</p>
+    <p style="margin-bottom:0">Merkintä <b style="color:var(--accent)">taso 1 / 3 / 5</b> kertoo, mitä arviointitasoa tehtävä mittaa. Vastauksesi tallentuvat tähän selaimeen.</p>
+  </div>
+</main>
+
+<div class="total"><div class="wrap">
+  <span>Automaattisesti tarkistetut pisteet: <b id="total">0</b> / <span id="max">0</span></span>
+  <button class="ghost" id="reset" style="color:#fff;border-color:#8a9aa9">Tyhjennä vastaukset</button>
+</div></div>
+
+<script>
+// ---------- Tehtävädata ----------
+// Tyypit: select (valinta, yksi oikea), num (luku välillä min–max), open (avoin, mallivastaus).
+const STRUCT = ["Karkea ferriitti + perliitti", "Hieno ferriitti + perliitti", "Osittain martensiitti (lisäksi bainiittia tai hienoa perliittiä)", "Martensiitti"];
+const TEMPER = ["n. 150–200 °C (matala päästö)", "n. 300–400 °C", "n. 550–650 °C (nuorrutus)"];
+const ANNEAL = ["Normalisointi", "Pehmeäksihehkutus", "Myöstöhehkutus", "Rekristallisaatiohehkutus"];
+const SURF = ["Induktiokarkaisu", "Liekkikarkaisu", "Hiiletyskarkaisu", "Kaasutypetys"];
+const TF = ["Totta", "Tarua"];
+const PURPOSE = [
+  "A. Kova pintakerros ilman sammutusta ja lähes ilman mittamuutoksia",
+  "B. Hitsauksen tai koneistuksen jännitysten poisto",
+  "C. Kova martensiittinen rakenne",
+  "D. Valun tai takeen karkean raekoon hienontaminen",
+  "E. Hyvä lujuuden, sitkeyden ja väsymislujuuden yhdistelmä",
+  "F. Parempi lastuttavuus ja kylmämuovattavuus"
+];
+const STEPS = ["Karkaisu n. 850 °C → öljy", "Päästö n. 550–650 °C", "Koneistus mittoihin", "Laakeripinnan induktiokarkaisu → vesisuihku", "Matala päästö n. 150–200 °C"];
+
+const PARTS = [
+ { part: "Osa A – Perusteet", tasks: [
+  { id: "t1", title: "Tehtävä 1. Käsitteet", time: "4 min", level: "1",
+    intro: "Valitse jokaiselle käsittelylle sen päätarkoitus.",
+    items: [
+      { t: "select", q: "Normalisointi", o: PURPOSE, a: 3, why: "Normalisointi austenitoi teräksen ja hienontaa rakeet ilmajäähdytyksessä." },
+      { t: "select", q: "Pehmeäksihehkutus", o: PURPOSE, a: 5, why: "Sementiitti palloutuu, joten teräs pehmenee." },
+      { t: "select", q: "Myöstöhehkutus", o: PURPOSE, a: 1, why: "Myöstö tehdään A1:n alapuolella: jännitykset laukeavat, mutta rakenne ei muutu." },
+      { t: "select", q: "Karkaisu", o: PURPOSE, a: 2, why: "Nopea sammutus austeniitista antaa martensiitin." },
+      { t: "select", q: "Nuorrutus", o: PURPOSE, a: 4, why: "Karkaisu ja korkea päästö (500–700 °C)." },
+      { t: "select", q: "Kaasutypetys", o: PURPOSE, a: 0, why: "Typetys tehdään n. 510 °C:ssa ilman sammutusta." }
+    ]},
+  { id: "t2", title: "Tehtävä 2. Olotilapiirros ja austenitointi", time: "8 min", level: "3",
+    intro: "Käytä Fe–C-piirroksen monistetta.",
+    items: [
+      { t: "num", q: "Mihin lämpötilaan (°C) C45 (0,45 % C) kuumennetaan ennen karkaisua?", min: 800, max: 870, why: "A3 on C45:lle n. 770–800 °C. Austenitointi A3 + 30–50 °C eli n. 810–860 °C." },
+      { t: "num", q: "Mihin lämpötilaan (°C) työkaluteräs C100 (1,0 % C) kuumennetaan ennen karkaisua?", min: 750, max: 800, why: "Yli 0,8 % C:n teräs karkaistaan A1:n yläpuolelta: 727 + 30–50 °C eli n. 760–780 °C." },
+      { t: "open", q: "Miksi C100:aa ei kuumenneta Acm-viivan yläpuolelle ennen karkaisua? Anna kaksi syytä.",
+        model: "Mitkä tahansa kaksi: (1) rakeet kasvavat ja martensiitista tulee karkea ja hauras; (2) kaikki sementiitti liukenee, austeniitin hiilipitoisuus nousee ja jäännösaustenittia jää enemmän; (3) halkeamis- ja vääntymisriski kasvaa; (4) liukenemattomat sementiittipallot parantaisivat kulutuskestävyyttä, ja ne menetetään." }
+    ]},
+  { id: "t3", title: "Tehtävä 3. Jäähtymisnopeus", time: "6 min", level: "1–3",
+    intro: "Ohut C45-koepala on austenitoitu. Mikä rakenne syntyy kussakin jäähdytyksessä?",
+    items: [
+      { t: "select", q: "Uunissa hitaasti", o: STRUCT, a: 0, why: "Hidas jäähtyminen antaa karkean ja pehmeän rakenteen." },
+      { t: "select", q: "Vapaasti ilmassa", o: STRUCT, a: 1, why: "Tämä on normalisointi." },
+      { t: "select", q: "Öljyssä", o: STRUCT, a: 2, why: "C45:n karkenevuus on heikko, joten öljy ei yleensä riitä täysin martensiittiseen rakenteeseen." },
+      { t: "select", q: "Vedessä", o: STRUCT, a: 3, why: "Vesi on riittävän nopea: kova ja hauras martensiitti." },
+      { t: "open", q: "Miksi martensiittia ei löydy Fe–C-olotilapiirroksesta?",
+        model: "Olotilapiirros kuvaa tasapainotilaa eli hyvin hidasta jäähtymistä. Martensiitti syntyy nopeassa jäähdytyksessä ilman hiilen diffuusiota, eikä se ole tasapainorakenne." }
+    ]}
+ ]},
+ { part: "Osa B – Karkaisu ja päästö", tasks: [
+  { id: "t4", title: "Tehtävä 4. Jominy-koe", time: "8 min", level: "3", jominy: true,
+    intro: "Kahdelle teräkselle on tehty Jominy-koe. Kummankin hiilipitoisuus on n. 0,42–0,45 %. Arvot on laadittu harjoitusta varten, mutta ne ovat näille teräksille tyypillisiä.",
+    items: [
+      { t: "select", q: "Kummalla teräksellä on parempi karkenevuus?", o: ["Teräs X", "Teräs Y"], a: 1, why: "Y:n kovuus pysyy korkeana kauempana sammutetusta päädystä. Loiva käyrä = hyvä karkenevuus." },
+      { t: "select", q: "Miksi kovuus sammutetussa päädyssä on molemmilla lähes sama?",
+        o: ["Molemmissa on yhtä paljon seosaineita", "Martensiitin kovuus riippuu hiilipitoisuudesta, joka on molemmissa sama", "Päätyä ei karkaista lainkaan"], a: 1,
+        why: "Pääty jäähtyy niin nopeasti, että molemmat karkenevat täysin. Martensiitin kovuus riippuu hiilestä." },
+      { t: "select", q: "Kumpi pari on todennäköisin?", o: ["X = C45, Y = 42CrMo4", "X = 42CrMo4, Y = C45"], a: 0, why: "Seosaineet (Cr, Mo) parantavat karkenevuutta, joten loivempi käyrä kuuluu seosteräkselle." },
+      { t: "select", q: "Kumpaa käytät Ø 60 mm akseliin, jonka pitää olla luja myös keskeltä?", o: ["Terästä X", "Terästä Y"], a: 1, why: "Paksun akselin keskusta jäähtyy hitaasti, ja vain hyvin karkeneva teräs karkenee sinne asti." }
+    ]},
+  { id: "t5", title: "Tehtävä 5. Päästölämpötilan valinta", time: "6 min", level: "3",
+    intro: "Valitse sopiva päästölämpötila.",
+    items: [
+      { t: "select", q: "Viila: kovuus ja kulutuskestävyys", o: TEMPER, a: 0, why: "Matala päästö: kovuus säilyy, jännitykset laukeavat." },
+      { t: "select", q: "Voimansiirtoakseli: lujuus, sitkeys ja väsymiskestävyys", o: TEMPER, a: 2, why: "Nuorrutus antaa parhaan lujuuden ja sitkeyden yhdistelmän." },
+      { t: "select", q: "Hiiletetty hammaspyörä: kova pinta säilyy", o: TEMPER, a: 0, why: "Korkea päästö pehmentäisi hiiletetyn pinnan." },
+      { t: "select", q: "Työohjeen mukaan nuorrutettava osa päästetään 350 °C:ssa. Mikä tässä on vikana?",
+        o: ["Ei mitään, 350 °C on tavallinen nuorrutuslämpötila", "350 °C on alemman päästöhaurauden alueella, jossa iskusitkeys laskee", "350 °C on liian kuuma, rakenne austenitoituu"], a: 1,
+        why: "Alempi päästöhauraus n. 300–400 °C. Nuorrutus tehdään 500–700 °C:ssa." },
+      { t: "open", q: "Miksi päästö tehdään heti sammutuksen jälkeen?",
+        model: "Karkaistu martensiitti on hauras ja täynnä jännityksiä. Jos päästö viivästyy, kappale voi halkeilla jo odottaessaan." }
+    ]}
+ ]},
+ { part: "Osa C – Hehkutukset ja pintakarkaisut", tasks: [
+  { id: "t6", title: "Tehtävä 6. Valitse hehkutus", time: "5 min", level: "1–3",
+    intro: "Valitse tilanteeseen sopiva hehkutus.",
+    items: [
+      { t: "select", q: "Kylmävedetty teräsputki on liian kova taivutettavaksi", o: ANNEAL, a: [3, 0], why: "Rekristallisaatiohehkutus poistaa muokkauslujittumisen: syntyy uudet rakeet. Myös normalisointi hyväksytään." },
+      { t: "select", q: "Valetun teräsosan rakenne on karkea ja iskusitkeys huono", o: ANNEAL, a: 0, why: "Normalisointi antaa hienon ferriitti–perliitin." },
+      { t: "select", q: "Hitsattu konerunko koneistetaan tarkkoihin mittoihin", o: ANNEAL, a: 2, why: "Myöstö poistaa jännitykset, jotta mitat eivät muutu koneistuksessa." },
+      { t: "select", q: "Laakeriteräs (1 % C) pitää sorvata ennen karkaisua", o: ANNEAL, a: 1, why: "Sementiitti palloutuu, ja lastuttavuus paranee." }
+    ]},
+  { id: "t7", title: "Tehtävä 7. Valitse pintakarkaisumenetelmä", time: "8 min", level: "3",
+    intro: "Valitse sopivin menetelmä.",
+    items: [
+      { t: "select", q: "C45:stä valmistettu nokka-akseli, sarjatuotanto", o: SURF, a: 0, why: "Keskihiilinen teräs karkenee ilman lisähiiltä. Induktiokarkaisu on nopea ja helppo automatisoida." },
+      { t: "select", q: "Ø 2 m hammaskehä, yksi kappale", o: SURF, a: 1, why: "Suuri yksittäinen kappale: liekki liikkuu pinnalla, uunia tai induktoria ei tarvita." },
+      { t: "select", q: "16MnCr5:stä valmistettu vaihteiston hammaspyörä", o: SURF, a: 2, why: "Niukkahiilinen teräs tarvitsee pintaan hiiltä ennen karkaisua." },
+      { t: "select", q: "Valmiiksi koneistettu tarkka muottiosa, ei mittamuutoksia", o: SURF, a: 3, why: "Matala lämpötila ja ei sammutusta: hyvin pienet mittamuutokset." },
+      { t: "select", q: "Miksi 16MnCr5:tä ei kannata induktiokarkaista ilman hiiletystä?",
+        o: ["Se ei johda sähköä", "Hiiltä on vain n. 0,16 %, joten martensiitista tulee liian pehmeä", "Se sulaa induktiokuumennuksessa"], a: 1,
+        why: "Martensiitin kovuus riippuu hiilestä. Niukkahiilisestä teräksestä ei saa kulutusta kestävää pintaa." },
+      { t: "select", q: "Miksi typetetyn pinnan kovuus mitataan Vickers-menetelmällä (HV)?",
+        o: ["Kerros on vain n. 0,1–0,6 mm, ja Rockwell-kärki painuisi sen läpi", "Typpi häiritsee Rockwell-mittaria", "HV on aina tarkempi kuin HRC"], a: 0,
+        why: "Vickers pienellä kuormalla mittaa vain ohutta pintakerrosta." }
+    ]},
+  { id: "t8", title: "Tehtävä 8. Totta vai tarua?", time: "5 min", level: "3",
+    intro: "Lue väite ja valitse. Mieti väärien väitteiden kohdalla, miten ne korjattaisiin.",
+    items: [
+      { t: "select", q: "Normalisointi poistaa teräksestä epäpuhtaudet.", o: TF, a: 1, why: "Tarua. Normalisointi hienontaa ja tasaa raerakenteen; epäpuhtaudet jäävät." },
+      { t: "select", q: "Seosaineet nostavat martensiitin kovuutta selvästi.", o: TF, a: 1, why: "Tarua. Seosaineet parantavat karkenevuutta; kovuus riippuu hiilipitoisuudesta." },
+      { t: "select", q: "Pehmeäksihehkutuksessa teräkseen syntyy pallomaista grafiittia.", o: TF, a: 1, why: "Tarua. Sementiitti palloutuu; grafiitti kuuluu valurautoihin." },
+      { t: "select", q: "Hiiletyskarkaisu tehdään niukkahiilisille teräksille.", o: TF, a: 0, why: "Totta. Hiiletysteräkset sisältävät n. 0,1–0,25 % hiiltä." },
+      { t: "select", q: "Typetetty kappale sammutetaan veteen.", o: TF, a: 1, why: "Tarua. Typetys tehdään n. 500–550 °C:ssa ilman sammutusta." },
+      { t: "select", q: "Pintakarkaisu parantaa usein väsymislujuutta.", o: TF, a: 0, why: "Totta. Pintaan syntyy puristusjännitys, joka hidastaa särön kasvua." }
+    ]}
+ ]},
+ { part: "Osa D – Soveltava tehtävä", tasks: [
+  { id: "t9", title: "Tehtävä 9. Kaivinkoneen nivelakseli", time: "12 min", level: "5",
+    intro: "Suunnittelet kaivinkoneen puomin nivelakselia. Akselin halkaisija on 80 mm. Laakeripinnan pitää kestää kulumista. Akseli saa iskuja ja vaihtelevaa kuormitusta, joten se ei saa murtua haurasti eikä väsyä.",
+    items: [
+      { t: "select", q: "Valitse teräs", o: ["S355", "C45", "42CrMo4", "C100"], a: 2,
+        why: "Nuorrutusteräs, jossa on riittävästi hiiltä induktiokarkaisuun. Seosaineet antavat Ø 80 mm:n akselille riittävän karkenevuuden, ja Mo lieventää päästöhaurautta. Myös hiiletysratkaisu (esim. 18CrNiMo7-6) on perusteltavissa." },
+      { t: "select", q: "Vaihe 1", o: STEPS, a: 0, why: "Nuorrutus alkaa karkaisulla." },
+      { t: "select", q: "Vaihe 2", o: STEPS, a: 1, why: "Korkea päästö: sitkeä ja luja sisus." },
+      { t: "select", q: "Vaihe 3", o: STEPS, a: 2, why: "Koneistus ennen pintakarkaisua (rouhinta voi olla jo ennen nuorrutusta)." },
+      { t: "select", q: "Vaihe 4", o: STEPS, a: 3, why: "Kova, kulutusta kestävä laakeripinta." },
+      { t: "select", q: "Vaihe 5", o: STEPS, a: 4, why: "Induktiokarkaistu pinta päästetään aina." },
+      { t: "open", q: "Mikä rakenne akselissa on lopuksi pinnassa ja mikä keskellä? Arvioi kovuudet.",
+        model: "Pinnassa martensiitti, n. 52–58 HRC, karkaistun kerroksen syvyys muutamia millimetrejä. Keskellä päästetty martensiitti (nuorrutettu rakenne), n. 25–32 HRC. Arvot suuntaa antavia." },
+      { t: "open", q: "Miten tarkastat, että käsittely onnistui? Nimeä mittausmenetelmät ja mittauskohdat.",
+        model: "Pinnan kovuus Rockwell- tai Vickers-menetelmällä laakeripinnalta. Karkaisusyvyys HV-kovuusprofiilina poikkileikkauksesta tai sisuksen kovuus Brinell-menetelmällä koekappaleesta. Lisäksi voi mainita iskukokeen ja magneettijauhetarkastuksen halkeamien varalta." }
+    ]}
+ ]}
+];
+
+const JOMINY = [[1.5, 57, 56], [3, 50, 55], [5, 35, 54], [9, 28, 51], [15, 24, 46], [25, 20, 40]];
+
+// ---------- Tallennus (vain tämä selain) ----------
+const KEY = "lampokasittely-tehtavat-v1";
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { saved = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} }
+
+// ---------- Apufunktiot ----------
+const el = (tag, attrs = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v; else if (k === "text") n.textContent = v; else n.setAttribute(k, v);
+  }
+  kids.forEach(k => n.append(k));
+  return n;
+};
+const isCorrect = (item, val) => {
+  if (item.t === "select") return val !== "" && (Array.isArray(item.a) ? item.a.includes(+val) : +val === item.a);
+  if (item.t === "num") { const x = parseFloat(String(val).replace(",", ".")); return !isNaN(x) && x >= item.min && x <= item.max; }
+  return null;
+};
+
+function jominyChart() {
+  const W = 640, H = 300, L = 56, R = 20, T = 20, B = 44;
+  const X = d => L + (d / 25) * (W - L - R), Y = h => T + (1 - (h - 15) / 45) * (H - T - B);
+  const ns = "http://www.w3.org/2000/svg";
+  const s = document.createElementNS(ns, "svg");
+  s.setAttribute("viewBox", `0 0 ${W} ${H}`); s.setAttribute("role", "img");
+  s.setAttribute("aria-label", "Jominy-käyrät: teräksen X kovuus putoaa jyrkästi, teräksen Y laskee loivasti");
+  const add = (tag, a, txt) => { const n = document.createElementNS(ns, tag); for (const k in a) n.setAttribute(k, a[k]); if (txt) n.textContent = txt; s.append(n); return n; };
+  [15, 25, 35, 45, 55].forEach(h => { add("line", { x1: L, x2: W - R, y1: Y(h), y2: Y(h), stroke: "#e3e7eb" }); add("text", { x: L - 8, y: Y(h) + 4, "text-anchor": "end", "font-size": 12, fill: "#5f6b78" }, h); });
+  [0, 5, 10, 15, 20, 25].forEach(d => add("text", { x: X(d), y: H - B + 18, "text-anchor": "middle", "font-size": 12, fill: "#5f6b78" }, d));
+  add("text", { x: (L + W - R) / 2, y: H - 6, "text-anchor": "middle", "font-size": 13, fill: "#3A4452" }, "Etäisyys sammutetusta päädystä (mm)");
+  add("text", { x: 14, y: T + 4, "font-size": 13, fill: "#3A4452" }, "HRC");
+  add("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: "#8a9aa9" });
+  [[1, "#5C7C99", "Teräs X"], [2, "#E8590C", "Teräs Y"]].forEach(([i, c, name]) => {
+    add("polyline", { points: JOMINY.map(r => `${X(r[0])},${Y(r[i])}`).join(" "), fill: "none", stroke: c, "stroke-width": 2.5 });
+    JOMINY.forEach(r => add("circle", { cx: X(r[0]), cy: Y(r[i]), r: 4, fill: c }));
+    const last = JOMINY[JOMINY.length - 1];
+    add("text", { x: X(last[0]) - 6, y: Y(last[i]) - 10, "text-anchor": "end", "font-size": 13, "font-weight": 600, fill: c }, name);
+  });
+  return s;
+}
+
+// ---------- Rakennus ----------
+const app = document.getElementById("app");
+let maxPoints = 0;
+const taskScores = {};
+
+PARTS.forEach(p => {
+  app.append(el("h2", { text: p.part }));
+  p.tasks.forEach(task => {
+    const box = el("section", { class: "task", id: task.id, "aria-labelledby": task.id + "-h" });
+    app.append(box);
+    box.append(el("h3", { id: task.id + "-h", text: task.title }));
+    const meta = el("div", { class: "meta" });
+    meta.innerHTML = `${task.time} · <b>taso ${task.level}</b>`;
+    box.append(meta, el("p", { text: task.intro }));
+
+    if (task.jominy) {
+      const tbl = el("table", { class: "data" });
+      tbl.innerHTML = "<thead><tr><th>Etäisyys (mm)</th><th>Teräs X (HRC)</th><th>Teräs Y (HRC)</th></tr></thead><tbody>" +
+        JOMINY.map(r => `<tr><td>${String(r[0]).replace(".", ",")}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("") + "</tbody>";
+      const showChart = el("button", { class: "ghost", type: "button", text: "Näytä kuvaaja (piirrä ensin itse)" });
+      const chartBox = el("div", { class: "chart", hidden: "" });
+      showChart.onclick = () => { chartBox.hidden = !chartBox.hidden; if (!chartBox.firstChild) chartBox.append(jominyChart()); };
+      box.append(tbl, showChart, chartBox);
+    }
+
+    const rows = [];
+    task.items.forEach((it, i) => {
+      const key = `${task.id}-${i}`;
+      const q = el("div", { class: "q" });
+      const lab = el("label", { for: key, text: it.q });
+      let input;
+      if (it.t === "select") {
+        input = el("select", { id: key });
+        input.append(el("option", { value: "", text: "– valitse –" }));
+        it.o.forEach((o, j) => input.append(el("option", { value: j, text: o })));
+        maxPoints++;
+      } else if (it.t === "num") {
+        input = el("div", { class: "row" });
+        const n = el("input", { type: "number", id: key, inputmode: "decimal", step: "5" });
+        input.append(n, el("span", { text: "°C" }));
+        maxPoints++;
+      } else {
+        input = el("textarea", { id: key, placeholder: "Kirjoita oma vastauksesi ennen kuin katsot mallivastauksen." });
+      }
+      const field = it.t === "num" ? input.querySelector("input") : input;
+      if (saved[key] !== undefined) field.value = saved[key];
+      field.addEventListener("input", () => { saved[key] = field.value; save(); });
+      field.addEventListener("change", () => { saved[key] = field.value; save(); });
+      const fb = el("div", { class: "fb", "aria-live": "polite" });
+      q.append(lab, input, fb);
+      box.append(q);
+      rows.push({ it, field, q, fb, key });
+    });
+
+    const actions = el("div", { class: "actions" });
+    const check = el("button", { type: "button", text: "Tarkista" });
+    const clear = el("button", { type: "button", class: "ghost", text: "Piilota palaute" });
+    const sc = el("span", { class: "score" });
+    actions.append(check, clear, sc);
+    box.append(actions);
+
+    const grade = (show) => {
+      let pts = 0, max = 0;
+      rows.forEach(({ it, field, q, fb }) => {
+        q.classList.remove("good", "bad"); fb.className = "fb";
+        if (it.t === "open") {
+          if (show) { fb.className = "fb show model"; fb.innerHTML = "<b>Mallivastaus:</b> "; fb.append(it.model); }
+          return;
+        }
+        max++;
+        const ok = isCorrect(it, field.value);
+        if (ok) pts++;
+        if (show) {
+          q.classList.add(ok ? "good" : "bad");
+          fb.className = "fb show " + (ok ? "ok" : "no");
+          fb.textContent = (ok ? "Oikein. " : (field.value === "" ? "Ei vastausta. " : "Ei aivan. ")) + it.why;
+        }
+      });
+      taskScores[task.id] = pts;
+      if (show) sc.textContent = `${pts} / ${max}`;
+      document.getElementById("total").textContent = Object.values(taskScores).reduce((a, b) => a + b, 0);
+      if (show) { saved["checked-" + task.id] = true; save(); }
+    };
+    check.onclick = () => grade(true);
+    clear.onclick = () => { rows.forEach(({ q, fb }) => { q.classList.remove("good", "bad"); fb.className = "fb"; }); sc.textContent = ""; saved["checked-" + task.id] = false; save(); };
+    grade(!!saved["checked-" + task.id]);
+  });
+});
+document.getElementById("max").textContent = maxPoints;
+document.getElementById("reset").onclick = () => {
+  if (!document.getElementById("reset").dataset.armed) {
+    document.getElementById("reset").dataset.armed = "1";
+    document.getElementById("reset").textContent = "Paina uudelleen vahvistaaksesi";
+    return;
+  }
+  saved = {}; save(); location.reload();
+};
+</script>
+</body>
+</html>
